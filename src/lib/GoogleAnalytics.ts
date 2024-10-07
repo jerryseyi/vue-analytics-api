@@ -1,9 +1,10 @@
-import { loadGapiInsideDOM } from "gapi-script";
+import {loadGapiInsideDOM} from "gapi-script";
 
 type GAReportResponse = gapi.client.analytics.GaData;
 
 interface GoogleAnalytics {
     initialize(trackingId: string): Promise<void>;
+
     getReport(
         viewId: string,
         startDate: string,
@@ -28,8 +29,8 @@ const GoogleAnalytics: GoogleAnalytics = {
                                 'https://analyticsreporting.googleapis.com/$discovery/rest?version=v4'
                             ]
                         }).then(() => {
-                            window.gapi.client('analytics', 'v3');
-                            resolve();
+                        window.gapi.client('analytics', 'v3');
+                        resolve();
                     })
                         .catch(err => reject(err));
                 });
@@ -60,6 +61,32 @@ const GoogleAnalytics: GoogleAnalytics = {
         }
     },
 
+    /*
+    * Fetches result from Google Analytics for a specific page path.
+    * */
+    async getPageReport(
+        viewId: string,
+        startDate: string,
+        endDate: string,
+        metrics: string[],
+        pagePath: string
+    ): Promise<GAReportResponse> {
+        try {
+            const response = await window.gapi.client.analytics.data.ga.get({
+                ids: `ga:${viewId}`,
+                "start-date": startDate,
+                "end-date": endDate,
+                metrics: metrics.join(','),
+                dimensions: 'ga:pagePath',
+                filters: `ga:pagePath==${pagePath}`
+            });
+
+            return response.result;
+        } catch (err) {
+            console.error('Error fetching analytics data:', error);
+            throw error;
+        }
+    }
 };
 
 

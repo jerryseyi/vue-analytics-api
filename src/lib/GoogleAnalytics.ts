@@ -153,7 +153,7 @@ const GoogleAnalytics: GoogleAnalytics = {
         }
     },
 
-    async getUniqueVisitorsByCity(
+    async getUniqueVisitsByCity(
         viewId: string,
         startDate: string,
         endDate: string

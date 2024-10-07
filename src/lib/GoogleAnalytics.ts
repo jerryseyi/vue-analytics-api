@@ -86,6 +86,28 @@ const GoogleAnalytics: GoogleAnalytics = {
             console.error('Error fetching analytics data:', error);
             throw error;
         }
+    },
+
+    async getVisitsByCountry(
+        viewId: string,
+        startDate: string,
+        endDate: string,
+        metric: string[]
+    ): Promise<GAReportResponse> {
+        try {
+            const response = await window.gapi.client.analytics.data.ga.get({
+                ids: `ga:${viewId}`,
+                "start-date": startDate,
+                "end-date": endDate,
+                metrics: metric.join(','),
+                dimensions: 'ga:country'
+            });
+
+            return response.result;
+        } catch (err) {
+            console.error('Error fetching analytics data:', error);
+            throw error;
+        }
     }
 };
 

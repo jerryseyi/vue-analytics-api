@@ -48,8 +48,8 @@ const GoogleAnalytics: GoogleAnalytics = {
         try {
             const response = await window.gapi.client.analytics.data.ga.get({
                 ids: `ga:${viewId}`,
-                "start-date": startDate,
-                "end-date": endDate,
+                'start-date': startDate,
+                'end-date': endDate,
                 metrics: metrics.join(','),
                 dimensions: dimensions.join(','),
             });
@@ -74,8 +74,8 @@ const GoogleAnalytics: GoogleAnalytics = {
         try {
             const response = await window.gapi.client.analytics.data.ga.get({
                 ids: `ga:${viewId}`,
-                "start-date": startDate,
-                "end-date": endDate,
+                'start-date': startDate,
+                'end-date': endDate,
                 metrics: metrics.join(','),
                 dimensions: 'ga:pagePath',
                 filters: `ga:pagePath==${pagePath}`
@@ -97,8 +97,8 @@ const GoogleAnalytics: GoogleAnalytics = {
         try {
             const response = await window.gapi.client.analytics.data.ga.get({
                 ids: `ga:${viewId}`,
-                "start-date": startDate,
-                "end-date": endDate,
+                'start-date': startDate,
+                'end-date': endDate,
                 metrics: metric.join(','),
                 dimensions: 'ga:country'
             });
@@ -118,13 +118,35 @@ const GoogleAnalytics: GoogleAnalytics = {
         try {
             const response = await window.gapi.client.analytics.data.ga.get({
                 ids: `ga:${viewId}`,
-                "start-date": startDate,
-                "end-date": endDate,
+                'start-date': startDate,
+                'end-date': endDate,
                 metrics: 'ga:users',
                 dimensions: 'ga:country'
             });
 
             return response.results;
+        } catch (err) {
+            console.error('Error fetching analytics data:', error);
+            throw error;
+        }
+    },
+
+    async getVisitsByCity(
+        viewId: string,
+        startDate: string,
+        endDate: string,
+        metrics: string[]
+    ): Promise<GAReportResponse> {
+        try {
+            const response = await window.gapi.client.analytics.data.ga.get({
+                ids: `ga:${viewId}`,
+                'start-date': startDate,
+                'end-date': endDate,
+                metrics: metrics.join(','),
+                dimensions: 'ga:city'
+            });
+            
+            return response.result;
         } catch (err) {
             console.error('Error fetching analytics data:', error);
             throw error;

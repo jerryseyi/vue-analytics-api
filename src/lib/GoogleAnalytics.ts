@@ -1,20 +1,8 @@
 import {loadGapiInsideDOM} from "gapi-script";
+import type {GoogleAnalyticsInterface} from "@/lib/types/GoogleAnalyticsInterface";
+import type {GAReportResponse} from "@/lib/types/GoogleAnayticsTypes";
 
-type GAReportResponse = gapi.client.analytics.GaData;
-
-interface GoogleAnalytics {
-    initialize(trackingId: string): Promise<void>;
-
-    getReport(
-        viewId: string,
-        startDate: string,
-        endDate: string,
-        metrics: string[],
-        dimensions?: string[],
-    ): Promise<GAReportResponse>;
-}
-
-const GoogleAnalytics: GoogleAnalytics = {
+const GoogleAnalytics: GoogleAnalyticsInterface = {
 
     initialize(apiKey: string, clientId: string): Promise<void> {
         return new Promise((resolve, reject) => {
